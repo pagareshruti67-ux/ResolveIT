@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function: Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function: Check if user is authenticated and is an administrator
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email in ["admin@college.edu", "facilities@college.edu"] ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin");
+    }
+    
+    // Helper function: Verify ownership
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // -------------------------------------------------------------
+    // USERS COLLECTION RULES
+    // -------------------------------------------------------------
+    match /users/{userId} {
+      // Any authenticated user can read their own profile; admins can read all
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Users can create their own profile during registration, but cannot self-assign 'admin' role
+      allow create: if isOwner(userId) && 
+        request.resource.data.role == "student" &&
+        request.resource.data.email == request.auth.token.email;
+        
+      // Ordinary users cannot modify their role or alter sensitive profile attributes
+      allow update: if isOwner(userId) && 
+        request.resource.data.role == resource.data.role;
+        
+      allow delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // COMPLAINTS COLLECTION RULES
+    // -------------------------------------------------------------
+    match /complaints/{complaintId} {
+      // Students can only read complaints where studentUid matches their auth UID; Admins read all
+      allow read: if isAuthenticated() && 
+        (resource.data.studentUid == request.auth.uid || isAdmin());
+
+      // Authenticated students can lodge complaints
+      // Input validation ensures compulsory fields are present and status starts at 'Pending'
+      allow create: if isAuthenticated() &&
+        request.resource.data.studentUid == request.auth.uid &&
+        request.resource.data.status == "Pending" &&
+        request.resource.data.title is string &&
+        request.resource.data.title.size() > 3 &&
+        request.resource.data.category in [
+          "Hostel Facilities", "Washroom and Cleanliness", "Electricity", 
+          "Water Supply", "Classroom Facilities", "Laboratory Equipment", 
+          "Internet and Wi-Fi", "Library", "Transportation", "Other"
+        ];
+
+      // Only authorized administrators can update status, priority, and resolution notes
+      // Students are strictly blocked from editing or overwriting complaints
+      allow update: if isAdmin() &&
+        request.resource.data.status in ["Pending", "In Progress", "Resolved", "Rejected"];
+
+      // Deletion is strictly reserved for system administrators
+      allow delete: if isAdmin();
+    }
+  }
+}

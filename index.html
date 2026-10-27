@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResolveIT — Digital Complaint Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Firebase SDKs (Compat version for zero-build browser runtime) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <span>ResolveIT</span>
+        <span class="tag">Cloud Portal</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+        <li><a href="#categories" class="nav-link">Categories</a></li>
+        <li><a href="#cloud-architecture" class="nav-link">Cloud Stack</a></li>
+      </ul>
+
+      <div class="nav-user" id="nav-auth-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+        <a href="login.html?tab=register" class="btn btn-primary btn-sm">Register</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="cloud-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+          </svg>
+          Cloud-Hosted Mini-Project • AWS Amplify / Azure SWA
+        </div>
+        <h1 class="hero-title">Cloud-Based Digital Complaint Management System</h1>
+        <p class="hero-subtitle">
+          Empowering college students to lodge infrastructure, academic, and facility complaints online. 
+          Track resolution status in real-time backed by scalable Google Cloud Firestore and secure authentication.
+        </p>
+        <div class="hero-actions">
+          <a href="login.html" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Lodge a Complaint
+          </a>
+          <a href="admin.html" class="btn btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            Admin Portal
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Visual Card -->
+      <div class="hero-visual">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.1rem; color: var(--primary-dark);">Live Campus Resolution Feed</h3>
+          <span class="badge badge-resolved">99.2% Uptime</span>
+        </div>
+        
+        <div class="hero-stat-card">
+          <div class="brand-icon" style="background: #10b981;">✓</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem;">RES-2026-1043: Projector Lamp Replaced</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Main Academic Bldg, Room 204 • Resolved in 24h</div>
+          </div>
+        </div>
+
+        <div class="hero-stat-card">
+          <div class="brand-icon" style="background: #6366f1;">⚙</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem;">RES-2026-1042: Wi-Fi Access Point Upgrade</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Computer Lab 3 • In Progress by IT Staff</div>
+          </div>
+        </div>
+
+        <div class="hero-stat-card">
+          <div class="brand-icon" style="background: #f59e0b;">⏳</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem;">RES-2026-1047: Digital Oscilloscope Calibration</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Hardware Lab • Under Review</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">How ResolveIT Works</h2>
+        <p class="section-desc">A transparent, transparent 4-stage lifecycle ensuring every student grievance is tracked to verified resolution.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="feature-card">
+          <div class="feature-icon">1</div>
+          <h3>Submit Online</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Authenticate securely, choose the facility category, specify location, and provide details. A unique tracking ID is generated instantly.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #e0e7ff; color: #4338ca;">2</div>
+          <h3>Automated Triage</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            The request is routed to Cloud Firestore. Facility administrators and department technicians receive the complaint in their dashboard.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #ecfdf5; color: #059669;">3</div>
+          <h3>Action & Resolution</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Staff updates the status to 'In Progress', dispatches maintenance, logs official resolution notes, and marks the task as 'Resolved'.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Grid -->
+  <section id="categories" class="section" style="background: #ffffff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Supported Facility Categories</h2>
+        <p class="section-desc">Comprehensive coverage of all campus infrastructure, laboratories, and student amenities.</p>
+      </div>
+
+      <div class="grid-category">
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🏢</div>
+          <h4>Hostel Facilities</h4>
+        </div>
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🚿</div>
+          <h4>Washroom & Hygiene</h4>
+        </div>
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">⚡</div>
+          <h4>Electricity & Power</h4>
+        </div>
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">💧</div>
+          <h4>Water Supply</h4>
+        </div>
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🏫</div>
+          <h4>Classroom Amenities</h4>
+        </div>
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🔬</div>
+          <h4>Laboratory Equipment</h4>
+        </div>
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">📶</div>
+          <h4>Internet & Wi-Fi</h4>
+        </div>
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">📚</div>
+          <h4>Central Library</h4>
+        </div>
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🚌</div>
+          <h4>Campus Transportation</h4>
+        </div>
+        <div class="category-chip">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">📋</div>
+          <h4>General Inquiries</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cloud Architecture Section -->
+  <section id="cloud-architecture" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Cloud Computing Architecture</h2>
+        <p class="section-desc">Built adhering to modern cloud principles: decoupled frontend hosting and serverless database backends.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #fef3c7; color: #b45309;">☁</div>
+          <h3>Frontend Edge Hosting</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Hosted on <strong>AWS Amplify</strong> or <strong>Azure Static Web Apps</strong> with global Content Delivery Network (CDN) distribution, automatic SSL certificate provisioning, and fast static delivery.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #e0f2fe; color: #0369a1;">🔒</div>
+          <h3>Firebase Authentication</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Secured via tokenized JWT session management. Enforces strict role-based authorization separating standard students from facility administrators.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #fce7f3; color: #be185d;">💾</div>
+          <h3>Cloud Firestore</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Scalable NoSQL cloud database storing complaint collections with granular security rules preventing unauthorized data tampering.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4 style="display: flex; align-items: center; gap: 8px;">
+            <div class="brand-icon" style="width: 28px; height: 28px;">✓</div>
+            ResolveIT Portal
+          </h4>
+          <p style="font-size: 0.9rem; line-height: 1.6; max-width: 420px;">
+            A Cloud Computing Mini-Project demonstrating frontend deployment on AWS Amplify / Azure Static Web Apps, 
+            integrated with Firebase Authentication and Google Cloud Firestore.
+          </p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul style="list-style: none; font-size: 0.9rem; line-height: 2;">
+            <li><a href="index.html" style="color: #cbd5e1;">Home</a></li>
+            <li><a href="login.html" style="color: #cbd5e1;">Student Login</a></li>
+            <li><a href="admin.html" style="color: #cbd5e1;">Admin Portal</a></li>
+            <li><a href="dashboard.html" style="color: #cbd5e1;">Student Dashboard</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academic Credit</h4>
+          <p style="font-size: 0.85rem; line-height: 1.6;">
+            <strong>Department of Computer Engineering</strong><br>
+            AISSMS College of Engineering, Pune<br>
+            SPPU 2024 Pattern • Academic Year 2026-27
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 ResolveIT. Developed for Cloud Computing Mini-Project.</div>
+        <div>Zero-Hardware • Serverless Cloud Architecture</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Update nav if user is already logged in
+    document.addEventListener("DOMContentLoaded", () => {
+      const user = window.AuthModule.getCurrentUser();
+      if (user) {
+        const navAuth = document.getElementById("nav-auth-actions");
+        navAuth.innerHTML = `
+          <a href="${user.role === 'admin' ? 'admin.html' : 'dashboard.html'}" class="btn btn-outline btn-sm">My Dashboard</a>
+          <button onclick="window.AuthModule.logoutUser()" class="btn btn-secondary btn-sm">Logout</button>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>
